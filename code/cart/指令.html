@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css"/>
+</head>
+<script src="angular.js"></script>
+<body>
+<div ng-app="myApp" ng-controller="myController">
+    <btn2 primary="true" block lg="true">itCast</btn2>
+</div>
+<script>
+    angular.module("myApp", [])
+        .controller("myController", ["$scope", function ($scope) {
+        }]).directive("btn2", function () {
+        return {
+            scope: {
+                primary: "@",
+                lg: "@",
+                block: "@"
+            },
+            transclude: true,
+            restrict: "AEMC",
+            template: '<button class="btn {{primary==\'true\'?\'btn-primary\':\'\'}} {{lg==\'true\'?\'lg\':\'\'}}" ng-transclude></button>',
+            /* template:'<button class="btn btn-primary lg" ng-transclude></button>',*/
+            replace: true
+        }
+    });
+</script>
+
+</body>
+</html>

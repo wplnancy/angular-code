@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+</head>
+<body ng-controller="firstCtrl">
+<panel-group>
+    <panel-body ng-repeat="collapse in data" heading="{{collapse.title}}">
+        {{collapse.content}}
+    </panel-body>
+</panel-group>
+<script src="../node_modules/angular/angular.js"></script>
+<script charset="utf-8" type="text/javascript">
+    angular.module('app', [])
+    // 数据
+        .factory('Data', function () {
+            return [
+                {
+                    title: 'no1',
+                    content: 'no1-content'
+                },
+                {
+                    title: 'no2',
+                    content: 'no2-content'
+                },
+                {
+                    title: 'no3',
+                    content: 'no3-content'
+                }
+            ];
+        })
+        // 控制器
+        .controller('firstCtrl', ['$scope', 'Data', function ($scope, Data) {
+            $scope.data = Data;
+        }])
+
+        .directive('panelGroup', function () {
+            return {
+                restrict: 'E',
+                replace: true,
+                template: '<div class="panel-group" ng-transclude></div>',
+                transclude: true,
+                controllerAs: 'panelGroupContrller',
+                controller: function () {
+                    this.groups = [];
+
+                    this.closeOtherCollapse = function (nowScope) {
+                        angular.forEach(this.groups, function (scope) {
+                            if (scope !== nowScope) {
+                                scope.isOpen = false;
+                            }
+                        })
+                    }
+                }
+            }
+        })
+
+        .directive('panelBody', function () {
+            return {
+                restrict: 'E',
+                replace: true,
+                require: '^panelGroup',
+                templateUrl: 'temp/template.html',
+                scope: {
+                    heading: '@'
+                },
+                link: function (scope, element, attrs, panelGroupContrller) {
+                    scope.isOpen = false;
+
+                    scope.changeState = function () {
+                        scope.isOpen = !scope.isOpen;
+
+                        panelGroupContrller.closeOtherCollapse(scope);
+                    };
+
+
+                    panelGroupContrller.groups.push(scope);
+                },
+                transclude: true
+            }
+        })
+
+</script>
+
+</body>
+</html>

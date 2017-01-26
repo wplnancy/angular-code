@@ -1,0 +1,23 @@
+<h1 class="page-header">正在热映</h1>
+<p ng-if="message.length">{{message}}</p>
+<ul class="list-group">
+	<li class="list-group-item" ng-repeat="item in subject">
+		<span class="badge">{{item.rating.average}}</span>
+		<a href="">
+			<div class="media">
+				<div class="media-left">
+					<img class="media-object" ng-src="{{item.images.small}}" alt="{{item.title}}">
+				</div>
+				<div class="media-body">
+					<h4 class="media-heading">{{item.title}}</h4>
+					<p>类型：<span>{{item.genres.join('、')}}   上映年份：{{item.year}}</span></p>
+					<p>导演<span ng-repeat="d in item.directors">{{d.name}}</span><span ng-if="!$last">、</span></p>
+					<!--或者使用两个表达式，就不需要使用字符串的拼接-->
+					<p>主演：<span ng-repeat="c in item.casts">{{c.name+ ($last ? '' : '、 ')}}</span></p>
+				</div>
+			</div>
+		</a>
+	</li>
+</ul>
+
+<p>共{{totalCount}}条记录</p>

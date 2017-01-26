@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../node_modules/angular/angular.js"></script>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <style>
+        [ng-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+<body ng-cloak>
+<div ng-controller="firstCtrl">
+    <!--参数是字符串，将全文搜索‘a’关键字-->
+    <input type="text" ng-model="youName">
+    <div ng-repeat="item in ary | filter: {name: youName} :myComparetor">
+        <p>Name:{{item.name}}</p>
+        <p>Age:{{item.age}}</p>
+    </div>
+</div>
+<script charset="utf-8" type="text/javascript">
+    angular.module("myApp", [])
+        .controller('firstCtrl', ['$scope', function ($scope) {
+            $scope.ary = [
+                {
+                    name: 'Tom',
+                    age: 20
+                },
+                {
+                    name: 'Tom Senior',
+                    age: 50
+                },
+                {
+                    name: 'Tom aenior',
+                    age: 30
+                }
+            ];
+            $scope.myFilter = function (item) {
+                return item.age === 20;
+            }
+            $scope.myComparetor = function (excepted, actual) {
+                return angular.equals(excepted.toLowerCase(), actual.toLowerCase());
+            }
+        }])
+
+
+</script>
+
+</body>
+</html>

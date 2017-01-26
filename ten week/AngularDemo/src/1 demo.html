@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<!--通过ng-app初始启动angular  并且加载app module这个模块  -->
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        [ng-cloak],
+        .ng-cloak {
+            display: none;
+        }
+    </style>
+    <script src="../node_modules/angular/angular.js"></script>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+</head>
+<body class="ng-cloak">
+<div ng-controller="appCtrl">
+    {{date}}
+    <ul>
+        <!--可以遍历两个参数  根据情况来定-->
+        <li ng-repeat="(index,item) in data">{{index}}====>{{item}} 索引：{{$index}} 第一个{{$first}} 最后一个{{$last}}
+            中间{{$middle}} 奇数{{$odd}} 偶数{{$even}}
+        </li>
+    </ul>
+    <!--  <ul>
+          <li ng-repeat="item in ary">
+              <span> 我的名字是{{item.name}}</span>
+              <span>今年{{item.age}}岁</span>
+              <span>门牌号是:{{item.num}}</span>
+          </li>
+      </ul>-->
+    <ul ng-repeat="(key,value) in obj">
+        <li>key值是：{{key}}===>value值是：{{value.code | uppercase}}===={{value.msg | lowercase}} 价格是：{{value.price |
+            currency : "￥"}}
+        </li>
+
+    </ul>
+</div>
+<script charset="utf-8" type="text/javascript">
+    //    console.log(angular);
+    angular.module("myApp", [])
+        .controller('appCtrl', ['$scope', '$interval', function ($scope, $interval) {
+            $scope.date = new Date();
+            $scope.data = ["新闻", "娱乐", "体育", "要闻"];
+            /* $scope.ary = [
+             {name: "wpl", age: 21, num: 21},
+             {name: "srx", age: 16, num: 11},
+             {name: "lc", age: 12, num: 12},
+             {name: "wxq", age: 32, num: 445}
+             ];*/
+
+            $scope.obj = {
+                name: {code: "mm", msg: "success", price: 300},
+                abc: {code: "kk", msg: "hahh", price: 500}
+            };
+
+
+            //如果按照原生的写的话setTimeout会执行，但是改变后的数据不会反应到视图上
+            $interval(function () {
+                $scope.date = new Date();
+            }, 1000);
+        }]);
+
+</script>
+</body>
+</html>

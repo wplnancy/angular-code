@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input type="text " id="text">
+<div id="val"></div>
+<script charset="utf-8" type="text/javascript">
+    var $ = function (name) {
+        return document.querySelector(name)
+    };
+    $('#text').oninput = function () {
+        $('#val').innerHTML = this.value;
+    }
+</script>
+
+</body>
+</html>

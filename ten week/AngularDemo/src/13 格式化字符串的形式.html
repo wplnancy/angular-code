@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../node_modules/angular/angular.js"></script>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <style>
+        [ng-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+<body ng-cloak>
+<div ng-controller="firstCtrl">
+    {{{name:'spl',age:28} | json}}
+    {{ "3456789" | number}}
+    <br/>
+    {{ true | number}}
+    <br/>
+    {{ 12345678 | number:1}}
+</div>
+<script charset="utf-8" type="text/javascript">
+    angular.module("myApp", [])
+        .controller('firstCtrl', ['$scope', function ($scope) {
+
+        }])
+
+
+</script>
+
+</body>
+</html>

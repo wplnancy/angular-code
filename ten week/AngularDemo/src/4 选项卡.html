@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        [ng-cloak] {
+            display: none;
+        }
+    </style>
+    <script src="../node_modules/angular/angular.js"></script>
+</head>
+<body ng-cloak>
+<div ng-controller="firstCtrl">
+    <ul ng-init="isTab='about'">
+        <li ng-click="isTab='index'">新闻</li>
+        <li ng-click="isTab='about'">娱乐</li>
+        <li ng-click="isTab='sport'">体育</li>
+    </ul>
+    <div ng-show="isTab=='index'">index的内容</div>
+    <div ng-show="isTab=='about'">about的内容</div>
+    <div ng-show="isTab=='sport'">sports的内容</div>
+</div>
+<div></div>
+<div></div>
+<script charset="utf-8" type="text/javascript">
+    angular.module("app", [])
+        .controller('firstCtrl', ['$scope', function ($scope) {
+            //$scope.isTab = 'index';
+        }]);
+</script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <style>
+        [ng-cloak] {
+            display: none;
+        }
+
+        .my-form.ng-invalid {
+            background-color: red;
+
+        }
+    </style>
+</head>
+<body ng-cloak>
+<div ng-controller="firstCtrl" class="container">
+    <ul class="nav nav-pills">
+        <li role="presentation" ng-class="{'active':item.name===curNav}" ng-repeat="item in menuName"
+            ng-click="toggleNav(item.name)"><a href="#">{{item.name}}</a>
+        </li>
+    </ul>
+
+</div>
+<script src="../node_modules/angular/angular.js"></script>
+<script charset="utf-8" type="text/javascript">
+    angular.module("myApp", [])
+        .controller('firstCtrl', ['$scope', function ($scope) {
+            $scope.curNav = 'Home';
+            $scope.toggleNav = function (name) {
+                $scope.curNav = name;
+            };
+            $scope.menuName = [
+                {
+                    name: 'Home'
+                },
+                {
+                    name: 'Profile'
+                },
+                {
+                    name: 'Messages'
+                }
+            ];
+
+        }]);
+
+</script>
+</body>
+</html>

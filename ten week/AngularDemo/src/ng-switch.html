@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        [ng-cloak] {
+            display: none;
+        }
+    </style>
+    <script src="../node_modules/angular/angular.js"></script>
+</head>
+<body ng-cloak>
+<div ng-controller="firstCtrl">
+    <select name="" id="" ng-model="selected">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+    </select>
+    <!--需要复杂判断的时候用到  ng-switch-->
+    <div ng-switch="selected">
+        <div ng-switch-when="1">您选择的是1</div>
+        <div ng-switch-when="2">您选择的是2</div>
+        <div ng-switch-when="3">您选择的是3</div>
+        <div ng-switch-default>您什么都没有选择</div>
+    </div>
+</div>
+<div></div>
+<div></div>
+<script charset="utf-8" type="text/javascript">
+    angular.module("app", [])
+        .controller('firstCtrl', ['$scope', function ($scope) {
+
+        }]);
+</script>
+</body>
+</html>

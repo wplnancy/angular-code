@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<!--通过ng-app初始启动angular  并且加载app module这个模块  -->
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        [ng-cloak],
+        .ng-cloak {
+            display: none;
+        }
+
+        div {
+            padding: 6px;
+        }
+
+        div.container {
+            border: 1px solid black;
+        }
+
+        div.my-info {
+            border: 1px solid blue;
+        }
+
+        div.my-directive {
+            border: 1px solid green;
+        }
+    </style>
+    <script src="../node_modules/angular/angular.js"></script>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+</head>
+<body class="ng-cloak">
+<div ng-controller="appCtrl">
+    <div class="my-info">我的名字是：<span ng-bind="name"></span>
+        <!-- 使用"ng-bind"防止网络状态不佳时出现没有被赋值表达式   -->
+        <br/>我的年龄是：<span ng-bind="age"></span>
+
+    </div>
+    <!-- 使用属性声明指令 -->
+    <div class="my-directive" my-directive age="age" my-name="{{name}}" change-my-age="changeAge()"></div>
+</div>
+<script charset="utf-8" type="text/javascript">
+    //    console.log(angular);
+    angular.module("myApp", [])
+        .directive("myDirective", function () {
+            return {
+                scope: {
+                    age: '=age',//这个传递的是变量
+                    name: '@myName',//双向数据绑定，传递的是一个字符串
+                    changeMyAge: '&changeMyAge'
+                },
+                replace: true,
+                template: "<div class='my-directive'>" +
+                "<h3>下面部分是我们创建的指令生成的</h3>" +
+                "我的名字是：<span ng-bind='name'></span><br/>" +
+                "我的年龄是：<span ng-bind='age'></span><br/>" +
+                "在这里修改名字：<input type='text' ng-model='name'><br/>" +
+                "<button ng-click='changeMyAge()'>修改年龄</button>" +
+                " </div>"
+            }
+        })
+        .controller('appCtrl', ['$scope', function ($scope) {
+            $scope.name = "dreamApp";
+            $scope.age = 20;
+            $scope.changeAge = function () {
+                $scope.age = 0;
+                $scope.name = "张三";//这里改变会影响视图的变化
+            }
+        }]);
+
+</script>
+</body>
+</html>

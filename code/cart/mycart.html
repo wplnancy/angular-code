@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css"/>
+    <style>
+        .orderColor {
+            color: #ff0000;
+        }
+
+        /**
+          ng-cloak指令就是在ng执行完后自动移除
+
+          还可以使用  class="ng-cloak"  ng对html进行了扩展
+        */
+        [ng-cloak] ，
+        .ng-cloak {
+            display: none;
+            /*为了防止由于ng执行的时间晚，于是手动的加上了这个样式*/
+        }
+
+    </style>
+</head>
+<body>
+<div class="container" ng-app ng-controller="cartController" ng-cloak class="ng-cloak">
+    <div class="form-group">
+        <input type="text" placeholder="Search by name" class="form-control" ng-model="search">
+    </div>
+    <table class="table table-bordered" ng-show="data.length">
+        <thead>
+        <tr>
+            <td ng-class="{dropup:order===''}" ng-click="changeOrder('id')">
+                产品编号
+                <span class="caret" ng-class="{orderColor:orderType==='id'}"></span>
+            </td>
+            <td ng-class="{dropup:order===''}" ng-click="changeOrder('name')">
+                产品名称
+                <span class="caret" ng-class="{orderColor:orderType==='name'}"></span>
+            </td>
+            <td ng-class="{dropup:order===''}" ng-click="changeOrder('quantity')">
+                购买数量
+                <span class="caret" ng-class="{orderColor:orderType==='quantity'}"></span>
+            </td>
+            <td ng-class="{dropup:order===''}" ng-click="changeOrder('price')">
+                产品单价
+                <span class="caret" ng-class="{orderColor:orderType==='price'}"></span>
+            </td>
+            <td>
+                产品总价
+            </td>
+            <td>
+                操作
+            </td>
+        </tr>
+
+        </thead>
+        <tbody>
+        <!--注意这里的两种写法-->
+        <!--<tr ng-repeat="item in data|filter:search">-->
+        <tr ng-repeat="item in data|filter:{name:search}|orderBy:order+orderType">
+            <td>{{item.id}}</td>
+            <td>{{item.name}}</td>
+            <td>
+                <button type="button" class="btn btn-primary" ng-click="reduce(item.id)">-</button>
+                <input type="text" ng-model="item.quantity">
+                <button type="button" class="btn btn-primary" ng-click="add(item.id)">+</button>
+            </td>
+            <td>{{item.price| currency:"￥"}}</td>
+            <td>{{item.quantity*item.price| currency:"￥"}}</td>
+            <td>
+                <button type="button" class="btn btn-danger" ng-click="remove(item.id)">移除</button>
+            </td>
+        </tr>
+        <tr>
+            <td>购买的总价格</td>
+            <td>{{totalPrice() | currency:"￥"}}</td>
+            <td>购买的总数量：</td>
+            <td>{{totalCount()}}</td>
+            <td colspan="2">
+                <button type="button" class="btn btn-danger" ng-click="clearCart()">清空购物车</button>
+            </td>
+        </tr>
+        </tbody>
+
+    </table>
+    <p ng-show="!data.length">购物车为空</p>
+</div>
+</body>
+<script src="angular.js"></script>
+<script>
+    var cartController = function ($scope) {
+        $scope.data = [
+            {
+                id: "1000",
+                name: "红米note",
+                quantity: 3,
+                price: 1099
+
+            },
+            {
+                id: "1001",
+                name: "vivo",
+                quantity: 4,
+                price: 2400
+
+            },
+            {
+                id: "1003",
+                name: "iphone7",
+                quantity: 10,
+                price: 7899
+            },
+            {
+                id: "1004",
+                name: "三星",
+                quantity: 10,
+                price: 4500
+
+            },
+            {
+                id: "999",
+                name: "苹果",
+                quantity: 10,
+                price: 6000
+
+            }
+        ];
+        //产品排序
+        $scope.order = "-";
+        $scope.orderType = "id";
+        $scope.changeOrder = function (orderType) {
+            if ($scope.order === "") {
+                $scope.order = "-";
+            } else {
+                $scope.order = "";
+            }
+            $scope.orderType = orderType;
+        };
+
+
+        $scope.totalPrice = function () {
+            var total = 0;
+            angular.forEach($scope.data, function (item) {
+                total += item.price * item.quantity;
+            });
+            return total;
+        }
+//        根据id获取对应的索引的值
+        var findIndex = function (id) {
+            var index = -1;
+            //根据id查找索引
+            angular.forEach($scope.data, function (item, key) {
+                if (item.id === id) {
+                    index = key;
+                    return;
+                }
+            })
+            return index;
+        }
+        $scope.totalCount = function () {
+            var count = 0;
+            angular.forEach($scope.data, function (item) {
+                count += item.quantity;
+            });
+            return count;
+        }
+        $scope.remove = function (id) {
+            var index = findIndex(id);
+            if (index !== -1) {
+                $scope.data.splice(index, 1);
+            }
+        }
+        $scope.clearCart = function () {
+            $scope.data = [];
+        }
+        //添加商品
+        $scope.add = function (id) {
+            var index = findIndex(id);
+            ++$scope.data[index].quantity;
+        }
+        $scope.reduce = function (id) {
+            var index = findIndex(id);
+            if ($scope.data[index].quantity > 1) {
+                --$scope.data[index].quantity;
+            } else {
+                var returnValue = confirm("是否从购物车中删除该商品！");
+                if (returnValue) {
+                    $scope.remove(id);
+                }
+            }
+        }
+        //监视购物车的数量的变化
+        $scope.$watch("data", function (newValue, oldValue) {
+            angular.forEach(newValue, function (item, key) {
+                console.log(key);
+                if (item.quantity < 1) {
+                    var res = confirm("是否从购物车中删除该商品？");
+                    if (res) {
+                        $scope.remove(item.id);
+                    } else {
+                        s
+                        item.quantity = oldValue[key].quantity;
+                    }
+                }
+            })
+
+        }, true);
+    }
+
+</script>
+</html>

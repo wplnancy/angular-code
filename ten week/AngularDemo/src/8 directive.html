@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        [ng-cloak] {
+            display: none;
+        }
+    </style>
+    <script src="../node_modules/angular/angular.js"></script>
+</head>
+<body ng-cloak>
+<div ng-controller="firstCtrl">
+    标签:
+    <!--入口传递进来-->
+    <my-tag count="count1"></my-tag>
+    样式名：
+    <div class="my-tag" count="count2"></div>
+    属性：
+    <div my-tag count="count3"></div>
+
+</div>
+<script charset="utf-8" type="text/javascript">
+    angular.module("app", [])
+    //angular应用初始加载程序后，最先执行的   指令不依赖控制器
+        .run(function ($rootScope) {
+            $rootScope.count = 1;
+            $rootScope.count2 = 2;
+            $rootScope.count3 = 3;
+
+        })
+        .directive('myTag', function () {
+            return {
+                restrict: 'AEC',
+                template: '<div><div>票数：{{+count}}</div><button ng-click="count=+count+1">点赞</button>{{name}}最帅</div>',
+                replace: true,
+                //scope: true// 独立的作用域 count是继承上一级的属性
+                scope: {
+//                    count:'@',
+                    count: '=count'//等号传递的是变量   数据是双向绑定的
+                    //组件之间不互相影响，但是会影响
+
+
+                }
+            }
+        })
+        .controller('firstCtrl', ['$scope', function ($scope) {
+
+        }]);
+</script>
+</body>
+</html>

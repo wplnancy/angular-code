@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<script src="jsonp.js"></script>
+</head>
+<body>
+<script charset="utf-8" type="text/javascript">
+	$jsonp(
+			'http://api.douban.com/v2/movie/coming_soon',
+			{
+				"count": 10,
+				"start": 5
+			},
+			function (data) {
+				console.log(data);
+			}
+	)
+</script>
+
+</body>
+</html>

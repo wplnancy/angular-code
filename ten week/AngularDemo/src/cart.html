@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>购物车</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <script src="../node_modules/angular/angular.js"></script>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <style>
+        .table {
+            margin: 30px;
+        }
+
+        [ng-cloak] {
+            display: none;
+        }
+
+        .table th {
+            cursor: pointer;
+        }
+
+        .caretColor {
+            color: red;
+        }
+
+    </style>
+</head>
+<body>
+<div ng-controller="myCtrl" class="container" ng-cloak>
+    <!--ng-init="changeState()"-->
+    <form class="form-horizontal" role="form">
+        <div class="form-group">
+            <label for="inputEmail3" class="col-lg-1 control-label">搜索字段</label>
+            <div class="col-lg-4">
+                <input type="text" class="form-control" id="inputEmail3" placeholder="Search" ng-model="search">
+            </div>
+        </div>
+    </form>
+    <table class="table table-bordered" ng-show="products.length">
+        <thead>
+        <tr>
+            <th><input type="checkbox" ng-model="isAll" ng-click="isAllSelected()">全选/全不选</th>
+            <th ng-class="{dropup:orderType==='',caretColor:order==='name'}" ng-click="changeOrder('name')">商品<span
+                    class="caret"></span></th>
+            <th ng-class="{dropup:orderType==='',caretColor:order==='price'}" ng-click="changeOrder('price')">单价<span
+                    class="caret"></span></th>
+            <th ng-class="{dropup:orderType==='',caretColor:order==='count'}" ng-click="changeOrder('count')">数量<span
+                    class="caret"></span></th>
+            <th>小计</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="item in products | filter: search | orderBy:orderType+order">
+            <td><input type="checkbox" ng-model="item.isSelected" ng-click="changeState()"></td>
+            <td>{{item.name}}</td>
+            <td>{{item.price | currency :"￥"}}</td>
+            <!--实现数据的双向绑定-->
+            <td>
+                <button type="button" class="btn btn-danger" ng-click="item.count=item.count+1">+</button>
+                <input type="text" ng-model="item.count">
+                <button type="button" class="btn btn-danger" ng-click="item.count=item.count===0?0:item.count-1">-
+                </button>
+            </td>
+            <td>{{item.price*item.count}}</td>
+            <td>
+                <button type="button" class="btn btn-primary" ng-click="remove(item)">删除</button>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">购买的金额数量：</td>
+            <td>{{caculate().total | currency :"￥"}}</td>
+            <td>合计的金额的数量：</td>
+            <td>{{caculate().totalCount}}</td>
+            <td class="text-center">
+                <!--把选中的商品删除即可-->
+                <button type="button" class="btn btn-danger" ng-click="clear()">删除选中商品</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div ng-hide="products.length">购物车是空的</div>
+</div>
+
+<script charset="utf-8" type="text/javascript">
+    angular.module('myApp', [])
+        .controller("myCtrl", ['$scope', function ($scope) {
+            //提供数据
+            $scope.products = [
+                {
+                    isSelected: true,//选中的状态
+                    name: "iphone7",
+                    price: 12000,
+                    count: 5
+                },
+                {
+                    isSelected: true,
+                    name: "iphone5",
+                    price: 2000,
+                    count: 5
+                },
+                {
+                    isSelected: true,
+                    name: "iphone4",
+                    price: 1000,
+                    count: 3
+                },
+                {
+                    isSelected: true,
+                    name: "iphone2",
+                    price: 4000,
+                    count: 14
+                }
+            ];
+            $scope.isAllSelected = function () {
+                angular.forEach($scope.products, function (item, index) {
+                    //item 是每一项   全选改变  同时下面的值也会跟着改变
+                    item.isSelected = $scope.isAll;
+                });
+            };
+
+
+            //每一项点击的时候监听事件
+            $scope.changeState = function () {
+                /* var arr = [];
+                 angular.forEach($scope.products, function (item, index) {
+                 if (item.isSelected) {
+                 arr.push(item);
+                 } else {
+                 $scope.isAll = false;
+                 return false;
+                 }
+                 });
+                 if (arr.length === $scope.products.length) {
+                 $scope.isAll = true;
+                 }*/
+                var isAllSelect = $scope.products.find(function (item) {
+                    //如果return返回　true   表示的是返回真的
+                    //return item.isSelected === false;//如果没有找到会是undefined
+                    //优化的方案
+                    return !item.isSelected;//只有找到false就是 不要选中全选的按钮
+                });
+                $scope.isAll = isAllSelect ? false : true;
+
+            };
+
+            //浏览器加载的时候主动的执行一次，检测一下数据的全选的状态
+
+            $scope.changeState();
+
+
+            $scope.remove = function (product) {
+                $scope.products = $scope.products.filter(function (item) {
+                    return item !== product;
+                });
+                $scope.changeState();
+            };
+
+            //监听购物车中数量的变化
+            $scope.$watch('products', function (newValue, oldValue) {
+                angular.forEach(newValue, function (item, index) {
+                    if (item.count == 1) {
+                        var isOk = window.confirm("是否从购物车中删除该商品?");
+                        if (isOk) {
+                            $scope.remove(name);//删除一项的值
+                        } else {
+                            $scope.count = oldValue[index].count;
+                        }
+                    }
+                })
+
+            });
+
+            $scope.caculate = function () {
+                //数量*价格
+                var total = 0,
+                    totalCount = 0;
+                angular.forEach($scope.products, function (item, index) {
+                    if (item.isSelected) {
+                        total += parseFloat(item.count) * item.price;
+                        totalCount += parseFloat(item.count);
+
+                    }
+                });
+                return {
+                    total: total,
+                    totalCount: totalCount
+                };
+            };
+
+
+            //清空选中的购物车
+            $scope.clear = function () {
+                /*angular.forEach($scope.products, function (item) {
+                 if (item.isSelected) {
+                 $scope.remove(item);//清空选中的项
+                 }
+                 })*/
+
+                $scope.products = $scope.products.filter(function (item) {
+                    return !item.isSelected;//留下来的是没有选中的
+                });
+            }
+
+            $scope.orderType = '-';
+            $scope.order = 'name';
+            $scope.changeOrder = function (order) {
+                if ($scope.orderType === '') {
+                    $scope.orderType = '-';
+                } else {
+                    $scope.orderType = '';
+                }
+                $scope.order = order;
+            }
+        }]);
+
+</script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>event事件</title>
+    <script src="../AngularDemo/node_modules/angular/angular.js"></script>
+</head>
+<body ng-init="isShow=true">
+<div ng-controller="firstCtrl" ng-if="isShow">
+    <input type="text" zf-model="name">
+    {{name}}
+    <button ng-click="hide()">隐藏</button>
+</div>
+<script>
+    //一切都是从模块开始
+    angular.module("myApp", [])
+        .controller("firstCtrl", ['$scope', '$rootScope', function ($scope, $rootScope) {
+            //只有引用了控制器$scope才会被创建出来
+            $scope.name = "张三";
+            console.log($scope);
+            $scope.hide = function () {
+                $rootScope.isShow = false;
+            };
+            //监听$scope是否被销毁的事件
+            $scope.$on('$destroy', function () {
+                console.log("$scope销毁了");
+            })
+
+
+        }]).directive('zfModel', function () {
+        return {
+            link: function (scope, element, attrs) {
+                //绑定事件监听函数
+                element.on('change', function () {
+                    scope[attrs['zfModel']] = element.val();
+                    //需要手动的来触发脏检查
+                    scope.$apply();
+                });
+                scope.$watch(attrs['zfModel'], function (newValue) {
+                    element.val(newValue);
+                })
+
+            }
+        }
+    });
+</script>
+</body>
+</html>

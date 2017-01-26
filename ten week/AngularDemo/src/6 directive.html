@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        [ng-cloak] {
+            display: none;
+        }
+    </style>
+    <script src="../node_modules/angular/angular.js"></script>
+</head>
+<body ng-cloak>
+<!--驼峰式命名   使用时候先转换为小写，并在第二个单词前面加上一个  ‘一’-->
+<div ng-controller="firstCtrl">
+    <!--<my-tag></my-tag>-->
+    <!--<div my-tag></div>-->
+    <!--注释的时候，一定要前后要加上空格 并且要设置replace:true 才会生效-->
+    <!--  注释：&lt;!&ndash; directive:my-tag &ndash;&gt;-->
+    类名的形式：
+    <div class="my-tag"><span>这是原来容器的内容</span></div>
+</div>
+<script charset="utf-8" type="text/javascript">
+    angular.module("app", [])
+        .directive('myTag', function () {
+            return {
+                restrict: 'AEMC',//默认的是EA
+                template: '<div>我是一个指令<h3 ng-transclude></h3></div>',
+                //当replace为true的时候，模板根节点只允许有一个
+
+                transclude: true,//保留原来的内容
+                replace: true//默认的是false
+            }
+        })
+        .controller('firstCtrl', ['$scope', function ($scope) {
+
+        }]);
+</script>
+</body>
+</html>

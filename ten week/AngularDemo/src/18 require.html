@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <style>
+        [ng-cloak] {
+            display: none;
+        }
+
+        .my-form.ng-invalid {
+            background-color: red;
+
+        }
+    </style>
+</head>
+<body ng-cloak>
+<div ng-controller="firstCtrl" class="container">
+    <div book-list></div>
+</div>
+<script src="../node_modules/angular/angular.js"></script>
+<script charset="utf-8" type="text/javascript">
+    angular.module("myApp", [])
+        .directive('bookList', function () {
+            return {
+                restrict: 'A',
+                replace: true,
+                template: '<div><ul><li ng-repeat="item in books">{{item.name}}</li></ul><add-book></add-book></div>',
+                controllerAs: 'bookListController',
+                controller: function ($scope) {
+                    $scope.books = [
+                        {
+                            name: 'javascript'
+                        },
+                        {
+                            name: 'node'
+                        },
+                        {
+                            name: 'jQuery'
+                        }
+                    ];
+                    //添加书本的方法
+                    this.addBook = function () {
+                        $scope.$apply(function () {
+                            $scope.books.push({name: 'angular'});
+                        })
+                    };
+                }
+            }
+        })
+        .directive('addBook', function () {
+            return {
+                restrict: 'E',
+                replace: true,
+                template: '<button>添加</button>',
+                require: '^bookList',
+                link: function (scope, element, attrs, bookListController) {
+                    element.on('click', bookListController.addBook);
+
+                }
+
+            }
+        })
+        .controller('firstCtrl', ['$scope', function ($scope) {
+
+        }])
+
+
+</script>
+</body>
+</html>

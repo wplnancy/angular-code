@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Angular 表达式</title>
+    <style>
+        /* ng-cloak指令就是在NG执行完毕过后自动移除 */
+
+        [ng-cloak],
+        .ng-cloak {
+            display: none;
+        }
+    </style>
+</head>
+<!--为了避免文字会闪一闪，这样就可以加上ng-cloak-->
+<!--class 属性  都可能是ng的指令   这里可以写两种的情况-->
+<body ng-app class="ng-cloak" ng-init="hello.world='hello'">
+{{ true ? 'true':'false' }};
+{{'hello'+'world'}};
+{{hello.world}};
+<!--表达式把拿不到的属性忽略掉了-->
+
+<!--不是说所有的js代码都可以在表达式里面出现   不能出现if else-->
+<script src="bower_components/angular/angular.js"></script>
+</body>
+
+</html>

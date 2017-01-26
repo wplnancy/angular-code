@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <style>
+        [ng-cloak] {
+            display: none;
+        }
+
+        .my-form.ng-invalid {
+            background-color: red;
+
+        }
+    </style>
+</head>
+<body ng-cloak>
+<div ng-controller="firstCtrl" class="container">
+    <form action="" name="myForm">
+        <div class="form-group">
+            <label class="col-sm-2">必须输入偶数</label>
+            <div class="col-sm-10">
+                <input type="text" ng-model="data.even" even name="even">
+                <input type="text" ng-model="data.even" even name="even">
+                <div ng-show="myForm.even.$error.even && myForm.even.$dirty" class="alert alert-danger help-block">
+                    必须输入是偶数
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>
+<script src="../node_modules/angular/angular.js"></script>
+<script charset="utf-8" type="text/javascript">
+    angular.module("myApp", [])
+        .directive('even', function () {
+            return {
+                require: 'ngModel',
+                link: function (scope, ele, attrs, ngModelController) {
+                    //view ->  model
+                    ngModelController.$parsers.push(function (viewValue) {
+                        if (viewValue % 2 == 0) {
+                            ngModelController.$setValidity('even', true);
+                        } else {
+                            ngModelController.$setValidity('even', false);
+                        }
+                        return viewValue;
+                    });
+                    //model->view
+                    ngModelController.$formatters.push(function (modelValue) {
+                        if (modelValue !== undefined) {
+                            return modelValue + "student";
+                        }
+                    })
+                }
+            }
+        })
+        .controller('firstCtrl', ['$scope', function ($scope) {
+
+        }]);
+
+</script>
+</body>
+</html>

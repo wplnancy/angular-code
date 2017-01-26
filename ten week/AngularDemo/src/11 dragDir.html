@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../node_modules/angular/angular.js"></script>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+    <style>
+        .oDiv {
+            width: 100px;
+            height: 100px;
+            background-color: red;
+            position: absolute;
+            left: 0;
+            top: 0;
+            cursor: move;
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+<drag-dir></drag-dir>
+<script charset="utf-8" type="text/javascript">
+    angular.module('app', [])
+        .directive('dragDir', function () {
+            return {
+                restrict: 'AEC',
+                replace: true,
+                template: '<div class="oDiv">点我拖拽</div>',
+                //templateUrl:'./panel.html'//传递的是一个地址
+                link: function (scope, element, attrs) {
+                    element.on('mousedown', function (e) {
+                        var disX = e.pageX - this.offsetLeft;
+                        var disY = e.pageY - this.offsetTop;
+                        e.preventDefault();
+                        angular.element(document).on('mousemove', function (e) {
+                            element.css({
+                                left: e.pageX - disX + 'px',
+                                top: e.pageY - disY + 'px'
+                            });
+                        });
+                        angular.element(document).on('mouseup', function () {
+                            angular.element(document).off('mousemove');
+                            angular.element(document).off('mouseup');
+                        });
+                    })
+                }
+
+            }
+        })
+</script>
+
+</body>
+</html>

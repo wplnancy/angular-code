@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        [ng-cloak] {
+            display: none;
+        }
+    </style>
+    <script src="../node_modules/angular/angular.js"></script>
+</head>
+<body ng-cloak>
+<div ng-controller="firstCtrl">
+    标签:
+    <!--入口传递进来-->
+    <my-tag count="count1" fn="tad(text)"></my-tag>
+    样式名：
+    <div class="my-tag" count="count2" fn="tad(text)"></div>
+    属性：
+    <div my-tag count="count3" fn="tad(text)"></div>
+
+</div>
+<script charset="utf-8" type="text/javascript">
+    angular.module("app", [])
+    //angular应用初始加载程序后，最先执行的   指令不依赖控制器
+        .run(function ($rootScope) {
+            $rootScope.count = 1;
+            $rootScope.count2 = 2;
+            $rootScope.count3 = 3;
+            $rootScope.tad = function (msg) {
+                alert(msg);
+            };
+
+        })
+        .directive('myTag', function () {
+            return {
+                restrict: 'AEC',
+                template: '<div><div>票数：</div><button  ng-click="fn({text:123})">点赞</button>{{name}}最帅</div>',
+                replace: true,
+                //scope: true// 独立的作用域 count是继承上一级的属性
+                scope: {
+//                    count:'@',
+                    count: '=count',//等号传递的是变量   数据是双向绑定的
+                    //组件之间不互相影响，但是会影响
+                    fn: '&fn'
+//                    传递参数，传参的时候需要以对象的形式key:value为组件属性设置的形参
+                }
+            }
+        })
+        .controller('firstCtrl', ['$scope', function ($scope) {
+
+        }]);
+</script>
+</body>
+</html>

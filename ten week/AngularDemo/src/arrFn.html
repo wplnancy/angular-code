@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script charset="utf-8" type="text/javascript">
+    var arr = [
+        {id: 1, name: "angular"},
+        {id: 2, name: "node"},
+        {id: 3, name: "react"},
+        {id: 4, name: "vue"}
+    ];
+
+    arr.push({id: 5, name: "webpack"});//增加一项
+    console.log(arr);
+
+
+    //filter会返回一个过滤之后的新数组  删除第四个
+    var newAry = arr.filter(function (item) {
+        /*return item.id === 4 ? false : true;*/
+        return id !== 4
+    });
+    console.log("删除：");
+    console.log(newAry);
+
+
+    //匹配的那一项返回return之后的结果，其他的不动
+    var updateAry = arr.map(function (item, index) {
+        //修改id为2的值
+        if (item.id == 2) {
+            return {id: 2, name: 'gulp'};
+        }
+        return item;
+    });
+    console.log("update:");
+    console.log(updateAry);
+
+    //返回的是找到的那一项  如果没有找到返回是undefined
+    var findItem = arr.find(function (item, index) {
+        return item.id === 3;
+    });
+    console.log("查找特定的某一项");
+    console.log(findItem);
+
+
+</script>
+
+</body>
+</html>

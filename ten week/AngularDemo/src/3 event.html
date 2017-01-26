@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>event事件</title>
+    <script src="../node_modules/angular/angular.js"></script>
+</head>
+<body>
+<div ng-controller="firstCtrl">
+    <input type="text" ng-model="name">
+    <div ng-controller="secondCtrl">
+        <input type="text" ng-model="name">
+    </div>
+</div>
+<div ng-click="handler($event)">手机电视冰箱洗衣机</div>
+<script>
+    //一切都是从模块开始
+    angular.module("myApp", [])
+        .controller("firstCtrl", ['$scope', function ($scope) {
+            $scope.handler = function (e) {
+                e = e || window.event;
+                console.log(e.target);
+            };
+            $scope.name = "张三";
+        }])
+        .controller('secondCtrl', ['$scope', function ($scope) {
+            $scope.name = "李四"
+
+        }]);
+
+</script>
+</body>
+</html>

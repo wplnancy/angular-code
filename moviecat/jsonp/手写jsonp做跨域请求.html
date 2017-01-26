@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<div id="result">
+</div>
+<img src="" alt="" id="pic"/>
+<script>
+    function $jsonp(url, data, callback) {
+        var queryString = url.indexOf("?") === -1 ? "?" : "";
+        for (var key in data) {
+            queryString += key + "=" + data[key] + "&";
+        }
+        var cbFunName = "my_jsonp_cb_" + Math.random().toString().replace(".", "");
+        queryString += "callback=" + cbFunName;
+
+        window[cbFunName] = callback;
+        url = url + queryString;
+        var oScript = document.createElement("script");
+        oScript.src = url;
+        document.body.appendChild(oScript);
+    }
+    var res = document.getElementById("result");
+    var pic = document.getElementById("pic");
+
+    $jsonp("http://api.douban.com/v2/movie/subject/1764796", {"start": 0, "count": 10}, function (data) {
+        res.innerHTML = "电影简介：" + data.summary;
+        pic.src = data.images["small"];
+    });
+
+</script>
+
+</body>
+</html>

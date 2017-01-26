@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../node_modules/angular/angular.js"></script>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <style>
+        [ng-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+<body ng-cloak>
+<div ng-controller="firstCtrl">
+    {{money | currency :"CHY￥" : 1}}
+    <!--小数默认是两位的小数-->
+    {{12.345 | currency : '￥' }}
+    <!--//不改变单位，小数部分将进行四舍五入的操作-->
+    {{12.234 | currency: undefined : 0}}
+    <!--不修改单位，修改小数的位数，后面不够的将会补0的操作-->
+    {{12.342 | currency :undefined : 4}}
+    <br>
+
+    {{ '2015-05-20T03:56:16.887Z' | date:"MM/dd/yyyy @ h:mma"}}
+</div>
+<script charset="utf-8" type="text/javascript">
+    angular.module("myApp", [])
+        .controller('firstCtrl', ['$scope', function ($scope) {
+            $scope.money = 23.46;
+        }])
+
+
+</script>
+
+</body>
+</html>

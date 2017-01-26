@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        [ng-cloak] {
+            display: none;
+        }
+    </style>
+    <script src="../node_modules/angular/angular.js"></script>
+</head>
+<body ng-cloak>
+<div ng-controller="firstCtrl">
+    标签:
+    <!--入口传递进来-->
+    <my-tag></my-tag>
+    样式名：
+    <div class="my-tag"></div>
+    属性：
+    <div my-tag></div>
+</div>
+<script charset="utf-8" type="text/javascript">
+    angular.module("app", [])
+    //angular应用初始加载程序后，最先执行的   指令不依赖控制器
+        .run(function ($rootScope) {
+            $rootScope.name = "root";
+        })
+        .directive('myTag', function () {
+            return {
+                restrict: 'AEC',
+                replace: true,
+                template: '<div class="links" name="angular">我是一个模板</div>',
+                /**
+                 *
+                 * Link 函数是来链接作用域和DOM (视图)
+                 * @param scope  是指令所在的当前作用域
+                 * @param elements  当前指令所在的元素   是一个jQ对象   但是不是所有的jQ的方法
+                 * @param attrs  指令所在元素的属性集合
+                 *
+                 */
+                link: function (scope, elements, attrs) {
+                    console.log(attrs);
+                    console.log(elements);//是一个jQ对象   但是不是所有的jQ的方法
+
+                }
+            }
+        })
+        .controller('firstCtrl', ['$scope', function ($scope) {
+
+        }]);
+</script>
+</body>
+</html>

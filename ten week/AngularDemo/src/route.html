@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <style>
+        [ng-cloak] {
+            display: none;
+        }
+
+        .my-form.ng-invalid {
+            background-color: red;
+
+        }
+    </style>
+</head>
+<body ng-cloak>
+<div class="container">
+    <h2>angularJS 路由应用</h2>
+    <ul>
+        <li><a href="#/">首页</a></li>
+        <li><a href="#/computer">电脑</a></li>
+        <li><a href="#/printers">打印机</a></li>
+        <li><a href="#/others">其他</a></li>
+    </ul>
+    <div ng-view></div>
+
+</div>
+<script src="http://apps.bdimg.com/libs/angular.js/1.4.6/angular.min.js"></script>
+<script src="http://apps.bdimg.com/libs/angular-route/1.3.13/angular-route.js"></script>
+
+<script type="text/javascript">
+    angular.module("app", ['ngRoute'])
+        .config(['$routeProvider', function ($routeProvider) {
+            $routeProvider
+                .when('/',
+                    {
+                        template: '这是我的首页面{{title}}',
+                        controller: 'AController'
+                    })
+                .when('/computer',
+                    {
+                        template: '这是我的电脑的页面{{title}}',
+                        controller: 'BController'
+                    })
+                .when('/printers:name?',
+                    {
+                        template: '这是我打印机的页面{{title}}',
+                        controller: 'CController'
+                    })
+                .when('/others',
+                    {
+                        template: "这是其他的页面{{title}}",
+                        controller: 'DController'
+                    })
+                .otherwise({
+                    redirectTo: '/'
+                })
+        }])
+        .controller('AController', function ($scope) {
+            $scope.title = "这是A控制器的标题";
+        })
+        .controller('BController', function ($scope, $routeParams) {
+            $scope.title = "这是B控制器的标题" + $routeParams.name;
+        })
+        .controller('CController', function ($scope) {
+            $scope.title = "这是C控制器的标题";
+        })
+        .controller('DController', function ($scope) {
+            $scope.title = "这是D控制器的标题";
+        });
+
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        [ng-cloak] {
+            display: none;
+        }
+    </style>
+    <script src="../node_modules/angular/angular.js"></script>
+</head>
+<body ng-cloak>
+<div ng-controller="firstCtrl">
+    标签:
+    <!--入口传递进来-->
+    <my-tag name="{{count}}"></my-tag>
+    样式名：
+    <div class="my-tag" name="{{count}}"></div>
+    属性：
+    <div my-tag name="{{count}}"></div>
+
+</div>
+<script charset="utf-8" type="text/javascript">
+    angular.module("app", [])
+    //angular应用初始加载程序后，最先执行的   指令不依赖控制器
+        .run(function ($rootScope) {
+            $rootScope.count = 3;
+
+        })
+        .directive('myTag', function () {
+            return {
+                restrict: 'AEC',
+                template: '<div><div>票数：{{+name}}</div><button ng-click="name=+name+1">点赞</button></div>',
+                replace: true,
+                //scope: true// 独立的作用域 count是继承上一级的属性
+                scope: {//完全独立的作用域  相对于完全隔离开来了  @ & =
+                    //count:'@name'//这个相当于是传递的入口    传递的是字符串的类型的   如果借用人的名字和传信的人的名字是一样的话，name就可以省略
+                    name: '@'
+
+
+                }
+            }
+        })
+        .controller('firstCtrl', ['$scope', function ($scope) {
+
+        }]);
+</script>
+</body>
+</html>
