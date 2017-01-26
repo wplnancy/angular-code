@@ -45,25 +45,6 @@
                 }
                 $route.updateParams({page: page});
             };
-
-
-            /*
-             $http({
-             method: 'GET',
-             url: '../app/data.json'
-             }).then(function successCallback(res) {
-             //此处的代码是在请求完成之后才执行的代码  因为ajax请求是异步回调的
-             if (res.status === 200) {
-             $scope.subject = res.data;
-             } else {
-             $scope.message = '请求数据错误';
-             }
-             }, function errorCallback(err) {
-             console.log(err);
-             $scope.message = '请求数据错误';
-             });*/
-
-
         }
         ])
     ;
