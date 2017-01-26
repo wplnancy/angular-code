@@ -245,6 +245,7 @@ a:link {
           transform: scale(1);
       }
 }
+
 /*遮罩的样式*/
 .mask {
     position: fixed;

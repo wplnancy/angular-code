@@ -8,8 +8,8 @@
             });
         }])
 
-        .controller('moviecatController', ['$scope', '$http', '$route', '$routeParams', 'HttpService', function ($scope, $http, $route, $routeParams, HttpService) {
-            var count = 10;
+        .controller('moviecatController', ['$scope', '$http', '$route', '$routeParams', 'HttpService', 'APPConfig', function ($scope, $http, $route, $routeParams, HttpService, APPConfig) {
+            var count = APPConfig.page_size;
             var page = parseInt($routeParams.page);
             var start = (page - 1) * count;
             $scope.totalPages = 0;
@@ -19,7 +19,7 @@
             $scope.totalCount = 0;
             $scope.currentPage = page;
             $scope.loading = false;
-            var doubanApiAddress = 'http://api.douban.com/v2/movie/' + $routeParams.category;
+            var doubanApiAddress = APPConfig.listApiAddress + $routeParams.category;
             HttpService.jsonp(
                 doubanApiAddress,
                 {

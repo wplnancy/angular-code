@@ -18,7 +18,7 @@
             $scope.message = '';
             $scope.totalCount = 0;
             $scope.currentPage = page;
-            $scope.loading = false;
+            $scope.loading = "Loading...";
             var doubanApiAddress = 'http://api.douban.com/v2/movie/in_theaters';
             HttpService.jsonp(
                 doubanApiAddress,

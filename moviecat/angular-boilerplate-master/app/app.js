@@ -7,8 +7,12 @@ angular.module('myApp', [
     'moviecat.services.http',
     'moviecat.directives.auto_focus',
     'myApp.moviecat'
-
-])
+])//constant是用来定义模块中的一些常量的
+    .constant('APPConfig', {
+        page_size: 10,
+        listApiAddress: 'http://api.douban.com/v2/movie/',
+        detailApiAddress: 'http://api.douban.com/v2/movie/subject/'
+    })
     .config(['$routeProvider', function ($routeProvider) {
         //指定默认请求的是第一页
         $routeProvider.otherwise({redirectTo: '/in_theaters/1'});
@@ -32,6 +36,4 @@ angular.module('myApp', [
                 $scope.type = 'top250';
             }
         })
-
-
     }]);
