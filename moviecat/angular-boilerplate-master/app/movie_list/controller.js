@@ -1,15 +1,14 @@
-
 'use strict';
 (function (angular) {
-    angular.module('myApp.coming_soon', ['ngRoute'])
+    angular.module('myApp.moviecat', ['ngRoute'])
         .config(['$routeProvider', function ($routeProvider) {
-            $routeProvider.when('/coming_soon/:page', {
-                templateUrl: 'coming_soon/view.html',
-                controller: 'comingSoonController'
+            $routeProvider.when('/:category/:page', {
+                templateUrl: 'in_theaters/view.html',
+                controller: 'moviecatController'
             });
         }])
 
-        .controller('comingSoonController', ['$scope', '$http', '$route', '$routeParams', 'HttpService', function ($scope, $http, $route, $routeParams, HttpService) {
+        .controller('moviecatController', ['$scope', '$http', '$route', '$routeParams', 'HttpService', function ($scope, $http, $route, $routeParams, HttpService) {
             var count = 10;
             var page = parseInt($routeParams.page);
             var start = (page - 1) * count;
@@ -20,7 +19,7 @@
             $scope.totalCount = 0;
             $scope.currentPage = page;
             $scope.loading = false;
-            var doubanApiAddress = 'http://api.douban.com/v2/movie/coming_soon';
+            var doubanApiAddress = 'http://api.douban.com/v2/movie/' + $routeParams.category;
             HttpService.jsonp(
                 doubanApiAddress,
                 {
@@ -46,6 +45,24 @@
                 }
                 $route.updateParams({page: page});
             };
+
+
+            /*
+             $http({
+             method: 'GET',
+             url: '../app/data.json'
+             }).then(function successCallback(res) {
+             //此处的代码是在请求完成之后才执行的代码  因为ajax请求是异步回调的
+             if (res.status === 200) {
+             $scope.subject = res.data;
+             } else {
+             $scope.message = '请求数据错误';
+             }
+             }, function errorCallback(err) {
+             console.log(err);
+             $scope.message = '请求数据错误';
+             });*/
+
 
         }
         ])
