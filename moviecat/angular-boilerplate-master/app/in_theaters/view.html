@@ -3,7 +3,7 @@
 <ul class="list-group">
     <li class="list-group-item" ng-repeat="item in subject">
         <span class="badge">{{item.rating.average}}</span>
-        <a href="">
+        <a href="#/detail/{{item.id}}">
             <div class="media">
                 <div class="media-left">
                     <img class="media-object" ng-src="{{item.images.small}}" alt="{{item.title}}">

@@ -24,7 +24,8 @@
                 doubanApiAddress,
                 {
                     count: count,
-                    start: start
+                    start: start,
+                    q: $routeParams.q
                 },
                 function (data) {
                     $scope.title = data.title;

@@ -13,6 +13,7 @@
                 link: function (scope, iEle) {
                     scope.$location = $location;
                     //时刻的监视location.path()的变化
+                    iEle.parent().children().removeClass('active');
                     scope.$watch('$location.path()', function (now) {
                         var aLink = iEle.children().attr('href');
                         var type = aLink.replace(/#(\/.+?)\/\d+/, '$1');
