@@ -4,10 +4,11 @@
 angular.module('myApp', [
 	'ngRoute',
 	'moviecat.services.http',
-	'myApp.coming_soon',
-	'myApp.in_theaters',
-	'myApp.top_250'
+'myApp.coming_soon',
+    'myApp.in_theaters',
+    'myApp.top_250'
 
 ]).config(['$routeProvider', function ($routeProvider) {
-	$routeProvider.otherwise({redirectTo: '/coming_soon'});
+	//指定默认请求的是第一页
+    $routeProvider.otherwise({redirectTo: '/in_theaters/1'});
 }]);

@@ -1,23 +1,60 @@
-<h1 class="page-header">正在热映</h1>
+<h1 class="page-header">{{title}}</h1>
 <p ng-if="message.length">{{message}}</p>
 <ul class="list-group">
-	<li class="list-group-item" ng-repeat="item in subject">
-		<span class="badge">{{item.rating.average}}</span>
-		<a href="">
-			<div class="media">
-				<div class="media-left">
-					<img class="media-object" ng-src="{{item.images.small}}" alt="{{item.title}}">
-				</div>
-				<div class="media-body">
-					<h4 class="media-heading">{{item.title}}</h4>
-					<p>类型：<span>{{item.genres.join('、')}}   上映年份：{{item.year}}</span></p>
-					<p>导演<span ng-repeat="d in item.directors">{{d.name}}</span><span ng-if="!$last">、</span></p>
-					<!--或者使用两个表达式，就不需要使用字符串的拼接-->
-					<p>主演：<span ng-repeat="c in item.casts">{{c.name+ ($last ? '' : '、 ')}}</span></p>
-				</div>
-			</div>
-		</a>
-	</li>
+    <li class="list-group-item" ng-repeat="item in subject">
+        <span class="badge">{{item.rating.average}}</span>
+        <a href="">
+            <div class="media">
+                <div class="media-left">
+                    <img class="media-object" ng-src="{{item.images.small}}" alt="{{item.title}}">
+                </div>
+                <div class="media-body">
+                    <h4 class="media-heading">{{item.title}}</h4>
+                    <p>类型：<span>{{item.genres.join('、')}}   上映年份：{{item.year}}</span></p>
+                    <p>导演<span ng-repeat="d in item.directors">{{d.name}}</span><span ng-if="!$last">、</span></p>
+                    <!--或者使用两个表达式，就不需要使用字符串的拼接-->
+                    <p>主演：<span ng-repeat="c in item.casts">{{c.name+ ($last ? '' : '、 ')}}</span></p>
+                </div>
+            </div>
+        </a>
+    </li>
 </ul>
+<div ng-show="loading">
+    <p>共{{totalCount}}条记录,第{{currentPage +'/'+ totalPages}}页</p>
+    <nav>
+        <ul class="pager">
+            <li ng-class="{disabled:currentPage<=1}"><a ng-click="go(currentPage-1)">Previous</a></li>
+            <li ng-class="{disabled:currentPage>=totalPages}"><a ng-click="go(currentPage+1)">Next</a></li>
+        </ul>
+    </nav>
+</div>
 
-<p>共{{totalCount}}条记录</p>
+<div class="mask" ng-show="!loading">
+    <div class="sk-circle">
+        <div class="sk-circle1 sk-child"></div>
+        <div class="sk-circle2 sk-child"></div>
+        <div class="sk-circle3 sk-child"></div>
+        <div class="sk-circle4 sk-child"></div>
+        <div class="sk-circle5 sk-child"></div>
+        <div class="sk-circle6 sk-child"></div>
+        <div class="sk-circle7 sk-child"></div>
+        <div class="sk-circle8 sk-child"></div>
+        <div class="sk-circle9 sk-child"></div>
+        <div class="sk-circle10 sk-child"></div>
+        <div class="sk-circle11 sk-child"></div>
+        <div class="sk-circle12 sk-child"></div>
+    </div>
+</div>
+
+<!--
+
+实现分页的效果
+
+1 start=0  count=10
+2 start=10  count=10
+3 start=20  count=10
+
+计算每一页的开始的位置
+start=（page-1）*count
+
+-->
